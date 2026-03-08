@@ -11,24 +11,19 @@ train_data, test_data, train_target, test_target = train_test_split(
 encoder = OneHotEncoder(sparse_output=False)
 train_target_oh = encoder.fit_transform(train_target.reshape(-1, 1))
 test_target_oh = encoder.transform(test_target.reshape(-1, 1))
-print(train_data.shape)
-print(train_target.shape)
-print(mnist.data[2])
-print(mnist.target[2])
 model = mlp()
-epochs = 10
+epochs = 5
 batch_size = 64
 for epoch in range(epochs):
     for i in range(0, train_data.shape[0], batch_size): 
         x = train_data[i:i+batch_size]
         y = train_target_oh[i:i+batch_size]
-        #print(y)
         predictions = model.forward(x)
         loss = cross_entropy_loss(predictions, y)
         dout = predictions - y
         model.backward(x, dout)
         if (i) % 1600 == 0:
-            print(f"Epoch {epoch}, Sample {i+1}, Loss: {loss:.8f}")
+            print(f"Epoch {epoch}, Sample {i}, Loss: {loss:.8f}")
 correct = 0
 for i in range(test_data.shape[0]):
     x = test_data[i].reshape(1, -1)
